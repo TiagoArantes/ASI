@@ -9,34 +9,47 @@
 	<title>Cidade</title>
 </h:head>
 <h:body>
-	<h:form>
+	<p:growl id="mensagem" />
+
+	<h:form id="formListagem">
 		<p:panel header="Cidade - Listagem">
-			<p:dataTable emptyMessage="Nenhum registro encontrado"
-				paginator="true">
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado"
+				paginator="true" value="#{cidadeBean.cidades}" var="cursorCidade"
+				rows="8">
 				<f:facet name="footer">
-					<p:commandButton value="Novo" oncomplete="PF('dialogo').show();" />
+					<p:commandButton value="Novo" actionListener="#{cidadeBean.novo}"
+						oncomplete="PF('dialogo').show();" 
+						update=":mensagem :formCadastro:painel" />
 				</f:facet>
-				<p:column headerText="Nome"></p:column>
-				<p:column headerText="Estado"></p:column>
+				<p:column headerText="Nome" sortBy="#{cursorCidade.nome}" 
+					filterBy="#{cursorCidade.nome}">
+					<h:outputText value="#{cursorCidade.nome}" />
+				</p:column>
+				<p:column headerText="Estado">
+					<h:outputText value="#{cursorCidade.estado.nome}" />
+				</p:column>
 				<p:column headerText="Opções"></p:column>
 			</p:dataTable>
 		</p:panel>
 	</h:form>
 
 	<p:dialog footer="Cidade - Cadastro" widgetVar="dialogo" modal="true" closable="false">
-		<h:form>
-			<h:panelGrid columns="2">
+		<h:form id="formCadastro">
+			<h:panelGrid id="painel" columns="2">
 				<p:outputLabel value="Nome:" />
-				<p:inputText size="30" maxlength="50" />
+				<p:inputText size="30" maxlength="50" value="#{cidadeBean.cidade.nome}" />
 
 				<p:outputLabel value="Estado:" />
-				<p:selectOneMenu filter="true">
-					<f:selectItem itemValue="" itemLabel="Selecione um Estado" />
+				<p:selectOneMenu filter="true" value="#{cidadeBean.cidade.estado}">
+					<f:selectItem noSelectionOption="true" itemLabel="Selecione um Estado" />
+					<f:selectItems value="#{cidadeBean.estados}" var="estado"
+						itemValue="#{estado}" itemLabel="#{estado.nome}" />
 				</p:selectOneMenu>
 			</h:panelGrid>
 			
 			<h:panelGrid columns="2">
-				<p:commandButton value="Salvar" />
+				<p:commandButton value="Salvar" actionListener="#{cidadeBean.salvar}" 
+					update =":mensagem :formCadastro:painel :formListagem:tabela" />
 				<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 			</h:panelGrid>
 		</h:form>
