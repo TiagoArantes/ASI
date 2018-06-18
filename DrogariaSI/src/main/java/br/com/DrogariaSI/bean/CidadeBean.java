@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
@@ -47,10 +48,7 @@ public class CidadeBean implements Serializable{
 		try {
 			EstadoDAO estadoDAO = new EstadoDAO();
 			estados = estadoDAO.listar();
-			System.out.println("Entrou no novo");
-			for(Estado est : estados) {
-				System.out.println(est.getNome());
-			}
+			
 		} catch (RuntimeException e) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar Estados");
 			e.printStackTrace();
@@ -79,9 +77,38 @@ public class CidadeBean implements Serializable{
 			cidadeDAO.merge(cidade);
 			cidades = cidadeDAO.listar();
 			novo();
-			
+			Messages.addGlobalInfo("Cidade salvo com sucesso");
 		}catch(RuntimeException e) {
 			Messages.addGlobalError("Ocorreu erro ao tentar cadastrar cidade");
+			e.printStackTrace();
+		}
+	}
+	
+	public void excluir(ActionEvent evento) {
+		try {
+			cidade = (Cidade) evento.getComponent().getAttributes().get("cidadeSelecionado");
+			
+			CidadeDAO cidadeDAO = new CidadeDAO();
+			cidadeDAO.excluir(cidade);
+			
+			cidades = cidadeDAO.listar();
+			
+			Messages.addGlobalInfo("Cidade: " + cidade.getNome()+" excluído com sucesso");
+		} catch (RuntimeException e) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar excluir Cidade");
+			e.printStackTrace();
+		}
+	}
+	
+	public void editar(ActionEvent evento) {
+		
+		try {
+			cidade = (Cidade) evento.getComponent().getAttributes().get("cidadeSelecionado");
+			EstadoDAO estadoDAO = new EstadoDAO();
+			estados = estadoDAO.listar();
+			
+		} catch (RuntimeException e) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar selecionar cidade");
 			e.printStackTrace();
 		}
 	}

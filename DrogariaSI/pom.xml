@@ -25,6 +25,17 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<!-- Repositórios -->
+	<repositories>
+		<!-- PrimeFaces -->
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
@@ -62,6 +73,13 @@
 			<artifactId>primefaces</artifactId>
 			<version>6.2</version>
 		</dependency>
+		
+		<!-- PrimeFaces Themes -->
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>all-themes</artifactId>
+			<version>1.0.10</version>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.omnifaces/omnifaces -->
 		<dependency>
@@ -69,7 +87,12 @@
 			<artifactId>omnifaces</artifactId>
 			<version>1.14.1</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.2.4</version>
+		</dependency>
 
 	</dependencies>
 
